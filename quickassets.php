@@ -2,7 +2,7 @@
 
 /**
  * WARNING:
- * Proof of concepts ahead!
+ * This will not work! Don't even bother trying!
  */
 
 
@@ -10,12 +10,13 @@
  * Call QuickAsset into action
  */
 
+include_once 'path/to/quickassets/lib.php';
 $asset = new QuickAsset();
 
 
 /**
  * 1. Define cache busters
- * --------------------
+ * -----------------------
  * Default "styles": inline, querystring, folder, and custom
  *
  * You define how the cache busting string itself is created, e.g.
@@ -51,7 +52,7 @@ $asset->addCacheBuster('myregex1', 'custom', function() {
 
 /**
  * 2. Define asset types
- * ------------------
+ * ---------------------
  * QuickAssets is oblivious to your assets (bring your own caching);
  * this is only present so you can define paths to assets (DRY!) and
  * use different cache busting methods for each type of asset.
@@ -79,7 +80,7 @@ $asset->addAssetType('movie', array(
 
 /**
  * 3. Define some domains
- * -------------------
+ * ----------------------
  * You can use a standard domain, a cycled domain (for better
  * parallelization of requests), or empty domains for
  * relative paths.
@@ -121,4 +122,4 @@ $asset->addDomain('http://media$.domain.com/', array(
 <!-- http://media1.domain.com/path/to/css/VERSION/style.css -->
 
 <?= $asset->url('movie', 'video.mp4') ?>
-<!-- http://media2.domain.com/path/to/movie/video.mp4 -->
+<!-- http://media2.domain.com/path/to/movies/video.mp4 -->
