@@ -40,12 +40,23 @@ $asset->addDomain('http://media$.domain.com/', array(
  * etc. Full control.
  */
 
-addCacheBuster('default', 'inline', function() {
+$asset->addCacheBuster('default', 'inline', function() {
 	return 'VERSION';
 });
 
-addCacheBuster('random', 'querystring', function() {
+$asset->addCacheBuster('random', 'querystring', function() {
 	return rand(5, 500);
+});
+
+$asset->addCacheBuster('myfolder1', 'folder', function() {
+	return 'VERSION';
+});
+
+$asset->addCacheBuster('myregex1', 'custom', function() {
+	// Do your custom thing...
+	$this->input = $output;
+
+	return $output;
 });
 
 
@@ -56,17 +67,23 @@ addCacheBuster('random', 'querystring', function() {
  * use different cache busting methods for each type of asset.
  */
 
-addAssetType('img', array(
+$asset->addAssetType('img', array(
 	path = 'path/to/img/',
 );
 
-addAssetType('js', array(
+$asset->addAssetType('js', array(
 	path = 'path/to/js/',
-	cachebuster = 'random'
+	cachebuster = 'random',
 );
 
-addAssetType('css', array(
+$asset->addAssetType('css', array(
 	path = 'path/to/css/',
+	cachebuster = 'myfolder1',
+);
+
+$asset->addAssetType('movie', array(
+	path = 'path/to/movies/',
+	cachebuster = 'regex',
 );
 
 ?>
@@ -80,4 +97,4 @@ addAssetType('css', array(
 <!-- http://www.domain.com/path/to/js/script.png?407 -->
 
 <?= $asset->url('css', 'style.css') ?>
-<!-- http://media1.domain.com/path/to/css/style.VERSION.css -->
+<!-- http://media1.domain.com/path/to/css/VERSION/style.css -->
