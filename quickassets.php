@@ -35,11 +35,11 @@ $asset->addCacheBuster('random', 'querystring', function() {
 	return rand(5, 500);
 });
 
-$asset->addCacheBuster('myfolder1', 'folder', function() {
+$asset->addCacheBuster('myfolder', 'folder', function() {
 	return 'VERSION';
 });
 
-$asset->addCacheBuster('myregex1', 'custom', function() {
+$asset->addCacheBuster('mycustom', 'custom', function() {
 	// Do your custom thing...
 	$this->input = $output;
 
@@ -60,6 +60,7 @@ $asset->addCacheBuster('myregex1', 'custom', function() {
 
 $asset->addAssetType('img', array(
 	assetPath = 'path/to/img/',
+	// No cacheBuster is explicitly set, so it uses "default"
 );
 
 $asset->addAssetType('js', array(
@@ -69,12 +70,12 @@ $asset->addAssetType('js', array(
 
 $asset->addAssetType('css', array(
 	assetPath   = 'path/to/css/',
-	cacheBuster = 'myfolder1',
+	cacheBuster = 'myfolder',
 );
 
 $asset->addAssetType('movie', array(
 	assetPath   = 'path/to/movies/',
-	cacheBuster = 'regex',
+	cacheBuster = 'mycustom',
 );
 
 
