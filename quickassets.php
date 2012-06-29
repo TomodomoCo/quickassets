@@ -52,8 +52,8 @@ $asset->addDomain('http://media$.domain.com/', array(
  * if you want to link it to time/date stamps, deployment versions,
  * etc.
  *
- * The "custom" allows you to determine not only how the string is
- * created, but where it's placed in the path.
+ * The "custom" style allows you to determine not only how the
+ * string is created, but where it's placed in the path.
  */
 
 $asset->addCacheBuster('default', 'inline', function() {
