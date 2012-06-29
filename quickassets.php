@@ -1,6 +1,12 @@
 <?php
 
 /**
+ * WARNING:
+ * Proof of concepts ahead!
+ */
+
+
+/**
  * Call QuickAsset into action
  */
 
@@ -9,21 +15,26 @@ $asset = new QuickAsset();
 
 /**
  * Define some domains
+ * -------------------
+ * You can use a standard domain, a cycled domain (for better
+ * parallelization of requests), or empty domains for
+ * relative paths.
+ *
+ * Double backslash protocol-relative URLs are also supported
+ * although they won't always work in local development.
  */
 
-$asset->addDomain('http://www.domain.com/', array(
-	type = 'img',
+$asset->addDomain('//www.domain.com/', array(
+	assetTypes = 'img',
 ));
 
-// Adding an empty domain seems easier and more explicit for relative
-// URLs than adding ANOTHER setting
 $asset->addDomain('', array(
-	type = 'js',
+	assetTypes = 'js',
 ));
 
 $asset->addDomain('http://media$.domain.com/', array(
-	max = 4,
-	type = 'css',
+	maxDomains = 4,
+	assetTypes = 'css, movie',
 ));
 // Output (cycling through assets, evenly spread, in order):
 // - http://media1.domain.com/
@@ -34,10 +45,15 @@ $asset->addDomain('http://media$.domain.com/', array(
 
 /**
  * Define cache busters
- * Three default "styles": inline, querystring, folder, and custom
+ * --------------------
+ * Default "styles": inline, querystring, folder, and custom
+ *
  * You define how the cache busting string itself is created, e.g.
  * if you want to link it to time/date stamps, deployment versions,
- * etc. Full control (especially with custom).
+ * etc.
+ *
+ * The "custom" allows you to determine not only how the string is
+ * created, but where it's placed in the path.
  */
 
 $asset->addCacheBuster('default', 'inline', function() {
@@ -57,47 +73,52 @@ $asset->addCacheBuster('myregex1', 'custom', function() {
 	$this->input = $output;
 
 	return $output;
+	// $output = 'path/to/movies/video.mp4';
+	// Note the absence of a leading slash. If you set a relative
+	// domain, we'll handle it.
 });
 
 
 /**
  * Define asset types
+ * ------------------
  * QuickAssets is oblivious to your assets (bring your own caching);
  * this is only present so you can define paths to assets (DRY!) and
  * use different cache busting methods for each type of asset.
  */
 
 $asset->addAssetType('img', array(
-	path = 'path/to/img/',
+	assetPath = 'path/to/img/',
 );
 
 $asset->addAssetType('js', array(
-	path = 'path/to/js/',
-	cachebuster = 'random',
+	assetPath   = 'path/to/js/',
+	cacheBuster = 'random',
 );
 
 $asset->addAssetType('css', array(
-	path = 'path/to/css/',
-	cachebuster = 'myfolder1',
+	assetPath   = 'path/to/css/',
+	cacheBuster = 'myfolder1',
 );
 
 $asset->addAssetType('movie', array(
-	path = 'path/to/movies/',
-	cachebuster = 'regex',
+	assetPath   = 'path/to/movies/',
+	cacheBuster = 'regex',
 );
 
 ?>
 
+
 <h1>In practice</h1>
 
 <?= $asset->url('img', 'image.png') ?>
-<!-- http://www.domain.com/path/to/img/image.VERSION.png -->
+<!-- //www.domain.com/path/to/img/image.VERSION.png -->
 
 <?= $asset->url('js', 'script.js') ?>
-<!-- http://www.domain.com/path/to/js/script.js?407 -->
+<!-- /path/to/js/script.js?407 -->
 
 <?= $asset->url('css', 'style.css') ?>
 <!-- http://media1.domain.com/path/to/css/VERSION/style.css -->
 
 <?= $asset->url('movie', 'video.mp4') ?>
-<!-- http://media1.domain.com/path/to/movie/video.mp4 -->
+<!-- http://media2.domain.com/path/to/movie/video.mp4 -->
