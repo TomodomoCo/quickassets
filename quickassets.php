@@ -14,37 +14,7 @@ $asset = new QuickAsset();
 
 
 /**
- * Define some domains
- * -------------------
- * You can use a standard domain, a cycled domain (for better
- * parallelization of requests), or empty domains for
- * relative paths.
- *
- * Double backslash protocol-relative URLs are also supported
- * although they won't always work in local development.
- */
-
-$asset->addDomain('//www.domain.com/', array(
-	assetTypes = 'img',
-));
-
-$asset->addDomain('', array(
-	assetTypes = 'js',
-));
-
-$asset->addDomain('http://media$.domain.com/', array(
-	maxDomains = 4,
-	assetTypes = 'css, movie',
-));
-// Output (cycling through assets, evenly spread, in order):
-// - http://media1.domain.com/
-// - http://media2.domain.com/
-// - http://media3.domain.com/
-// - http://media4.domain.com/
-
-
-/**
- * Define cache busters
+ * 1. Define cache busters
  * --------------------
  * Default "styles": inline, querystring, folder, and custom
  *
@@ -80,7 +50,7 @@ $asset->addCacheBuster('myregex1', 'custom', function() {
 
 
 /**
- * Define asset types
+ * 2. Define asset types
  * ------------------
  * QuickAssets is oblivious to your assets (bring your own caching);
  * this is only present so you can define paths to assets (DRY!) and
@@ -105,6 +75,36 @@ $asset->addAssetType('movie', array(
 	assetPath   = 'path/to/movies/',
 	cacheBuster = 'regex',
 );
+
+
+/**
+ * 3. Define some domains
+ * -------------------
+ * You can use a standard domain, a cycled domain (for better
+ * parallelization of requests), or empty domains for
+ * relative paths.
+ *
+ * Double backslash protocol-relative URLs are also supported
+ * although they won't always work in local development.
+ */
+
+$asset->addDomain('//www.domain.com/', array(
+	assetTypes = 'img',
+));
+
+$asset->addDomain('', array(
+	assetTypes = 'js',
+));
+
+$asset->addDomain('http://media$.domain.com/', array(
+	maxDomains = 4,
+	assetTypes = 'css, movie',
+));
+// Output (cycling through assets, evenly spread, in order):
+// - http://media1.domain.com/
+// - http://media2.domain.com/
+// - http://media3.domain.com/
+// - http://media4.domain.com/
 
 ?>
 
