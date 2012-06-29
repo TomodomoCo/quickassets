@@ -12,7 +12,7 @@ $asset = new QuickAsset();
  */
 
 $asset->addDomain('http://www.domain.com/', array(
-	type = 'img, js',
+	type = 'img',
 ));
 
 // Adding an empty domain seems easier and more explicit for relative
