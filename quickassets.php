@@ -15,10 +15,30 @@ $asset = new QuickAsset();
 
 
 /**
+ * 0. Define filename handlers
+ * ---------------------------
+ * We include three by default: inline/default, queryString, and folder
+ *
+ * Inline: file.ext > file.VERSION.ext OR file > file-VERSION
+ * Querystring: file.ext > file.ext?VERSION
+ * Folder: file.ext > VERSION/file.ext
+ *
+ * You can add your own as well. We give you the relative path to
+ * the asset type and the file name: you do the rest.
+ */
+
+$asset->addShowMethod('myCustomHandler', function() {
+	$myAssetPath   = $this->assetPath();
+	$myFilename    = $this->filename();
+	$myBustMethod  = $this->bustMethod();
+
+	return myAssetPath . str_replace('.', '.version-' . $myBustMethod . '.', $myFilename);
+});
+
+
+/**
  * 1. Define cache busters
  * -----------------------
- * Default "styles": inline, querystring, folder, and custom
- *
  * You define how the cache busting string itself is created, e.g.
  * if you want to link it to time/date stamps, deployment versions,
  * etc.
@@ -27,26 +47,16 @@ $asset = new QuickAsset();
  * string is created, but where it's placed in the path.
  */
 
-$asset->addCacheBuster('default', 'inline', function() {
+$asset->addBustMethod('default', function() {
 	return 'VERSION';
 });
 
-$asset->addCacheBuster('random', 'querystring', function() {
+$asset->addBustMethod('myRandomBuster', function() {
 	return rand(5, 500);
 });
 
-$asset->addCacheBuster('myfolder', 'folder', function() {
-	return 'VERSION';
-});
-
-$asset->addCacheBuster('mycustom', 'custom', function() {
-	// Do your custom thing...
-	$this->input = $output;
-
-	return $output;
-	// $output = 'path/to/movies/video.mp4';
-	// Note the absence of a leading slash. If you set a relative
-	// domain, we'll handle it.
+$asset->addBustMethod('myCustomBuster', function() {
+	return '123456';
 });
 
 
@@ -60,22 +70,25 @@ $asset->addCacheBuster('mycustom', 'custom', function() {
 
 $asset->addAssetType('img', array(
 	assetPath = 'path/to/img/',
-	// No cacheBuster is explicitly set, so it uses "default"
+	// bustMethod is not set, so it uses "default"
+	// showMethod is not set, so it uses "inline" (also scoped to "default")
 );
 
 $asset->addAssetType('js', array(
-	assetPath   = 'path/to/js/',
-	cacheBuster = 'random',
+	assetPath  = 'path/to/js/',
+	bustMethod = 'myRandomBuster',
+	showMethod = 'queryString',
 );
 
 $asset->addAssetType('css', array(
-	assetPath   = 'path/to/css/',
-	cacheBuster = 'myfolder',
+	assetPath  = 'path/to/css/',
+	showMethod = 'folder',
 );
 
 $asset->addAssetType('movie', array(
-	assetPath   = 'path/to/movies/',
-	cacheBuster = 'mycustom',
+	assetPath  = 'path/to/movies/',
+	bustMethod = 'myCustomBuster',
+	showMethod = 'myCustomHandler',
 );
 
 
@@ -123,4 +136,4 @@ $asset->addDomain('http://media$.domain.com/', array(
 <!-- http://media1.domain.com/path/to/css/VERSION/style.css -->
 
 <?= $asset->url('movie', 'video.mp4') ?>
-<!-- http://media2.domain.com/path/to/movies/video.mp4 -->
+<!-- http://media2.domain.com/path/to/movies/video.version-123456.mp4 -->
