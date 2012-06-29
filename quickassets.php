@@ -34,10 +34,10 @@ $asset->addDomain('http://media$.domain.com/', array(
 
 /**
  * Define cache busters
- * Three default "styles": inline, querystring, and folder
+ * Three default "styles": inline, querystring, folder, and custom
  * You define how the cache busting string itself is created, e.g.
  * if you want to link it to time/date stamps, deployment versions,
- * etc. Full control.
+ * etc. Full control (especially with custom).
  */
 
 $asset->addCacheBuster('default', 'inline', function() {
@@ -93,8 +93,11 @@ $asset->addAssetType('movie', array(
 <?= $asset->url('img', 'image.png') ?>
 <!-- http://www.domain.com/path/to/img/image.VERSION.png -->
 
-<?= $asset->url('js', 'blah.js') ?>
-<!-- http://www.domain.com/path/to/js/script.png?407 -->
+<?= $asset->url('js', 'script.js') ?>
+<!-- http://www.domain.com/path/to/js/script.js?407 -->
 
 <?= $asset->url('css', 'style.css') ?>
 <!-- http://media1.domain.com/path/to/css/VERSION/style.css -->
+
+<?= $asset->url('movie', 'video.mp4') ?>
+<!-- http://media1.domain.com/path/to/movie/video.mp4 -->
