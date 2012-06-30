@@ -8,28 +8,28 @@ include_once 'lib.php';
 $a = new QuickAsset();
 
 $a->addAssetType('img', array(
-	assetPath = 'wp-content/themes/awesomedesign/img/',
+	'assetPath' => 'wp-content/themes/awesomedesign/img/',
 ));
 
 $a->addAssetType('js', array(
-	assetPath = 'wp-content/themes/awesomedesign/js/',
+	'assetPath' => 'wp-content/themes/awesomedesign/js/',
 ));
 
 $a->addAssetType('css', array(
-	assetPath = 'wp-content/themes/awesomedesign/css/',
+	'assetPath' => 'wp-content/themes/awesomedesign/css/',
 ));
 
 $a->addHost('//www.domain.com/', array(
-	assetTypes = 'img, js',
+	'assetTypes' => 'img, js',
 ));
 
 if (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off' || $_SERVER['SERVER_PORT'] == 443) {
 	$a->addHost('https://www.domain.com/', array(
-		assetTypes = 'css',
+		'assetTypes' => 'css',
 	));
 } else {
 	$a->addHost('http://www.domain.com/', array(
-		assetTypes = 'css',
+		'assetTypes' => 'css',
 	));
 }
 
