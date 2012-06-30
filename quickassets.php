@@ -7,10 +7,10 @@
 
 
 /**
- * Call QuickAsset into action
+ * Call QuickAssets into action
  */
 
-include_once 'path/to/quickassets/lib.php';
+include_once 'lib.php';
 $asset = new QuickAsset();
 
 
@@ -29,10 +29,10 @@ $asset = new QuickAsset();
 
 $asset->addShowMethod('myCustomHandler', function() {
 	$myAssetPath   = $this->assetPath();
-	$myFilename    = $this->filename();
+	$myAssetFile   = $this->assetFile();
 	$myBustMethod  = $this->bustMethod();
 
-	return myAssetPath . str_replace('.', '.version-' . $myBustMethod . '.', $myFilename);
+	return myAssetPath . str_replace('.', '.version-' . $myBustMethod . '.', $myAssetFile);
 });
 
 
