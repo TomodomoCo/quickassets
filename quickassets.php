@@ -69,27 +69,27 @@ $asset->addBustMethod('myCustomBuster', function() {
  */
 
 $asset->addAssetType('img', array(
-	assetPath = 'path/to/img/',
+	'assetPath' => 'path/to/img/',
 	// bustMethod is not set, so it uses "default"
 	// showMethod is not set, so it uses "inline" (also scoped to "default")
-);
+));
 
 $asset->addAssetType('js', array(
-	assetPath  = 'path/to/js/',
-	bustMethod = 'myRandomBuster',
-	showMethod = 'queryString',
-);
+	'assetPath'  => 'path/to/js/',
+	'bustMethod' => 'myRandomBuster',
+	'showMethod' => 'queryString',
+));
 
 $asset->addAssetType('css', array(
-	assetPath  = 'path/to/css/',
-	showMethod = 'folder',
-);
+	'assetPath'  => 'path/to/css/',
+	'showMethod' => 'folder',
+));
 
 $asset->addAssetType('movie', array(
-	assetPath  = 'path/to/movies/',
-	bustMethod = 'myCustomBuster',
-	showMethod = 'myCustomHandler',
-);
+	'assetPath'  => 'path/to/movies/',
+	'bustMethod' => 'myCustomBuster',
+	'showMethod' => 'myCustomHandler',
+));
 
 
 /**
@@ -104,16 +104,16 @@ $asset->addAssetType('movie', array(
  */
 
 $asset->addHost('//www.domain.com/', array(
-	assetTypes = 'img',
+	'assetTypes' => 'img',
 ));
 
 $asset->addHost('', array(
-	assetTypes = 'js',
+	'assetTypes' => 'js',
 ));
 
 $asset->addHost('http://media$.domain.com/', array(
-	maxHosts = 4,
-	assetTypes = 'css, movie',
+	'maxHosts' => 4,
+	'assetTypes' => 'css, movie',
 ));
 // Output (cycling through assets, evenly spread, in order):
 // - http://media1.domain.com/
