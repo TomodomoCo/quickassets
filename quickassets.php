@@ -93,26 +93,26 @@ $asset->addAssetType('movie', array(
 
 
 /**
- * 3. Define some domains
+ * 3. Define some hosts
  * ----------------------
  * You can use a standard domain, a cycled domain (for better
- * parallelization of requests), or empty domains for
- * relative paths.
+ * parallelization of requests), or empty entry for relative
+ * paths.
  *
  * Double backslash protocol-relative URLs are also supported
  * although they won't always work in local development.
  */
 
-$asset->addDomain('//www.domain.com/', array(
+$asset->addHost('//www.domain.com/', array(
 	assetTypes = 'img',
 ));
 
-$asset->addDomain('', array(
+$asset->addHost('', array(
 	assetTypes = 'js',
 ));
 
-$asset->addDomain('http://media$.domain.com/', array(
-	maxDomains = 4,
+$asset->addHost('http://media$.domain.com/', array(
+	maxHosts = 4,
 	assetTypes = 'css, movie',
 ));
 // Output (cycling through assets, evenly spread, in order):

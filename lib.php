@@ -22,7 +22,7 @@ class QuickAsset {
 
 	}
 
-	public function addDomain() {
+	public function addHost() {
 
 	}
 
