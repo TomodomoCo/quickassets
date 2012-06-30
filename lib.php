@@ -16,8 +16,25 @@ class QuickAsset {
 	
 		// prepare the default show methods and bust methods
 		
-		$this->addShowMethod('_default', function() { echo 'STUB'; });
-		$this->addBustMethod('_default', function() { echo 'STUB'; });
+		$this->addShowMethod('_default', function($host, $assetFile, $assetPath, $bustString) {
+			
+			// get the position of the last dot (the file extension)
+			$lastDot = strrpos($assetFile, '.');
+			
+			// get the substring before the last dot (beginning) and after (end)
+			$beginning = substr($assetFile, 0, $lastDot);
+			$end = substr($assetFile, $lastDot, strlen($assetFile));
+			
+			// stitch together, putting the bust string in beteen $beginning and $end
+			return $host . $assetPath . $beginning . '.' . $bustString . $end;			
+			
+		});
+		
+		$this->addBustMethod('_default', function($assetPath, $assetFile, $rootPath) {
+			
+			return date('YmdHis', @filemtime($rootPath . '/' . $assetPath . $assetFile));		
+			
+		});
 
 	}
 
@@ -121,13 +138,22 @@ class QuickAsset {
 			$showMethod = '_default';
 		}
 		
+		if (array_key_exists('rootPath', $parameters))
+		{
+			$rootPath = $parameters['rootPath'];
+		}
+		else {
+			$rootPath = dirname(realpath($_SERVER['SCRIPT_FILENAME']));
+		}
+		
 		// add the new asset type
 		if (!in_array($assetType, $this->assetTypes))
 		{
 			$this->assetTypes[$assetType] = array(
 				'assetPath'       =>     $parameters['assetPath'],
 				'bustMethod'      =>     $bustMethod,
-				'showMethod'      =>     $showMethod
+				'showMethod'      =>     $showMethod,
+				'rootPath'        =>     $rootPath
 			);
 			
 			return true;
@@ -279,12 +305,6 @@ class QuickAsset {
 		 	Considering... does bustMethod need to know about the on-disk filename? Will this be a problem?
 		 	
 		 */
-		 
-		 print_r($this->assetTypes);
-		 print_r($this->bustMethods);
-		 print_r($this->showMethods);
-		 print_r($this->hosts);
-		 print_r($this->assetTypesToHosts);
 
 		 // do we know about this asset type?		 
 		 if (!array_key_exists($assetType, $this->assetTypes))
@@ -302,7 +322,7 @@ class QuickAsset {
 		 
 		 $host = $this->assetTypesToHosts[$assetType];
 		 
-		 // is the bust method callable?
+		  // is the bust method callable?
 		 $bustMethod = $this->assetTypes[$assetType]['bustMethod'];
 		 
 		 if (!array_key_exists($bustMethod, $this->bustMethods))
@@ -335,12 +355,15 @@ class QuickAsset {
 		 else {
 			 $hostString = $host;
 		 }
+
+		 $assetPath = $this->assetTypes[$assetType]['assetPath'];
+		 $rootPath = $this->assetTypes[$assetType]['rootPath'];
 		 
-		 // execute bust method to get busted filename
-		 $bustedFilename = call_user_func($bustMethod['function'], $assetFile);
+		 // execute bust method to get bust string
+		 $bustString = call_user_func_array($this->bustMethods[$bustMethod], array($assetPath, $assetFile, $rootPath));
 		 
 		 // execute show method to get finished string
-		 $finishedAsset = call_user_func($showMethod['function'], $bustedFilename);
+		 $finishedAsset = call_user_func_array($this->showMethods[$showMethod], array($hostString, $assetFile, $assetPath, $bustString));
 		 
 		 // post filtering
 		 //eesca
