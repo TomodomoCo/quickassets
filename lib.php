@@ -355,7 +355,13 @@ class QuickAsset {
 		 else {
 			 $hostString = $host;
 		 }
-
+		 
+		 if ($hostString == '_')
+		 {
+		 	// deal with default host case
+			$hostString = '';
+		 }
+		 
 		 $assetPath = $this->assetTypes[$assetType]['assetPath'];
 		 $rootPath = $this->assetTypes[$assetType]['rootPath'];
 		 
