@@ -10,19 +10,19 @@ class QuickAsset {
 
 	}
 
-	public function addShowMethod() {
+	public function addShowMethod($methodName, $function) {
 
 	}
 
-	public function addBustMethod() {
+	public function addBustMethod($methodName, $function) {
 
 	}
 
-	public function addAssetType() {
+	public function addAssetType($assetType, $parameters) {
 
 	}
 
-	public function addHost() {
+	public function addHost($host, $parameters) {
 
 	}
 
@@ -53,7 +53,3 @@ $asset->addBustMethod('default', function() {
 */
 
 ?>
-
-
-<h1>This does not work yet.</h1>
-<?php echo $asset->url('img', 'image.png') ?>
