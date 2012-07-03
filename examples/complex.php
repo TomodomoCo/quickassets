@@ -2,7 +2,7 @@
 
 /**
  * WARNING:
- * This will not work! Don't even bother trying!
+ * This may not work! Try it only with the caveat that it may eat all your food and force you to walk the plank.
  */
 
 
@@ -10,7 +10,7 @@
  * Call QuickAssets into action
  */
 
-include_once 'lib.php';
+include_once '../lib.php';
 $asset = new QuickAsset();
 
 
@@ -27,14 +27,7 @@ $asset = new QuickAsset();
  * the asset type and the file name: you do the rest.
  */
 
-/*$asset->addShowMethod('myCustomHandler', function() {
-	$myAssetPath   = $this->assetPath();
-	$myAssetFile   = $this->assetFile();
-	$myBustMethod  = $this->bustMethod();
 
-	return myAssetPath . str_replace('.', '.version-' . $myBustMethod . '.', $myAssetFile);
-});
-*/
 
 /**
  * 1. Define cache busters
@@ -47,16 +40,20 @@ $asset = new QuickAsset();
  * string is created, but where it's placed in the path.
  */
 
-$asset->addBustMethod('default', function() {
+$asset->addBustMethod('someString', function($assetPath, $assetFile, $rootPath) {
 	return 'VERSION';
 });
 
-$asset->addBustMethod('myRandomBuster', function() {
+$asset->addBustMethod('myRandomBuster', function($assetPath, $assetFile, $rootPath) {
 	return rand(5, 500);
 });
 
-$asset->addBustMethod('myCustomBuster', function() {
+$asset->addBustMethod('myCustomBuster', function($assetPath, $assetFile, $rootPath) {
 	return '123456';
+});
+
+$asset->addBustMethod('md5Buster', function($assetPath, $assetFile, $rootPath) {
+	return md5($rootPath . '/' . $assetPath . $assetFile);
 });
 
 
@@ -70,25 +67,22 @@ $asset->addBustMethod('myCustomBuster', function() {
 
 $asset->addAssetType('img', array(
 	'assetPath' => 'path/to/img/',
-	// bustMethod is not set, so it uses "default"
-	// showMethod is not set, so it uses "inline" (also scoped to "default")
+	// bustMethod is not set, so it uses "_default"
+	// showMethod is not set, so it uses "_default"
 ));
 
 $asset->addAssetType('js', array(
 	'assetPath'  => 'path/to/js/',
 	'bustMethod' => 'myRandomBuster',
-	'showMethod' => 'queryString',
 ));
 
 $asset->addAssetType('css', array(
 	'assetPath'  => 'path/to/css/',
-	'showMethod' => 'folder',
 ));
 
 $asset->addAssetType('movie', array(
-	'assetPath'  => 'path/to/movies/',
-	'bustMethod' => 'myCustomBuster',
-	'showMethod' => 'myCustomHandler',
+	'assetPath'	=>	'path/to/movie',
+	'bustMethod' => 'md5Buster'
 ));
 
 
@@ -130,10 +124,10 @@ $asset->addHost('http://media$.domain.com/', array(
 <!-- //www.domain.com/path/to/img/image.VERSION.png -->
 
 <?= $asset->url('js', 'script.js') ?>
-<!-- /path/to/js/script.js?407 -->
+<!-- /path/to/js/script.407.js -->
 
 <?= $asset->url('css', 'style.css') ?>
 <!-- http://media1.domain.com/path/to/css/VERSION/style.css -->
 
 <?= $asset->url('movie', 'video.mp4') ?>
-<!-- http://media2.domain.com/path/to/movies/video.version-123456.mp4 -->
+<!-- http://media2.domain.com/path/to/movies/video.version-8f5bffb4b330c96eb5733c2a76c6b364.mp4 -->

@@ -2,12 +2,6 @@
 
 QuickAssets is a simple script in development with the goal of making it easier to generate cache-bustable URLs in PHP.
 
-It does not work.
-
-It may never work.
-
-The syntax right now is a weird blend of JavaScript and PHP. Deal with it.
-
 The goal is to create a simple framework for defining a server (or multiple servers) and automatically setting cache-friendly URLs. You should be handling the actual caching yourself, either with server-side Apache/Nginx settings or with a cache engine like Varnish (or both).
 
 ## MIT License

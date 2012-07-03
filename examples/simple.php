@@ -4,7 +4,7 @@
  * A _realistic_ sample configuration of quickassets.
  */
 
-include_once 'lib.php';
+include_once '../lib.php';
 $a = new QuickAsset();
 
 $a->addAssetType('img', array(
