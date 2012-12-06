@@ -264,11 +264,15 @@ class QuickAsset {
 	
 		if (!array_key_exists('hostCounter', $this->hosts[$host]))
 		{
-			$this->hosts[$host]['hostCounter'] = 0;			
+			$this->hosts[$host]['hostCounter'] = 0;
 		}
-		
+
 		$cycledHost = str_replace('$', $this->hosts[$host]['hostCounter'], $host);
-		++$this->hosts[$host]['hostCounter'];
+		if ( $this->hosts[$host]['hostCounter'] < ($this->hosts[$host]['maxHosts'] - 1) ) {
+			++$this->hosts[$host]['hostCounter'];
+		} else {
+			$this->hosts[$host]['hostCounter'] = 0;
+		}
 		
 		return $cycledHost;
 		
