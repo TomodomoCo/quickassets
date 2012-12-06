@@ -32,7 +32,7 @@ class QuickAsset {
 		
 		$this->addBustMethod('_default', function($assetPath, $assetFile, $rootPath) {
 			
-			return date('YmdHis', @filemtime($rootPath . '/' . $assetPath . $assetFile));		
+			return date('YmdHis', @filemtime($rootPath . $assetPath . $assetFile));		
 			
 		});
 
@@ -143,7 +143,7 @@ class QuickAsset {
 			$rootPath = $parameters['rootPath'];
 		}
 		else {
-			$rootPath = dirname(realpath($_SERVER['SCRIPT_FILENAME']));
+			$rootPath = dirname(realpath($_SERVER['SCRIPT_FILENAME'])) . '/';
 		}
 		
 		// add the new asset type
