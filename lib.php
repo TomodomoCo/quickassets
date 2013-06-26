@@ -18,6 +18,12 @@ class QuickAsset {
 		
 		$this->addShowMethod('_default', function($host, $assetFile, $assetPath, $bustString) {
 			
+			return $host . $assetPath . $assetFile . '?' . $bustString;
+			
+		});
+
+		$this->addShowMethod('qa_inline', function($host, $assetFile, $assetPath, $bustString) {
+			
 			// get the position of the last dot (the file extension)
 			$lastDot = strrpos($assetFile, '.');
 			

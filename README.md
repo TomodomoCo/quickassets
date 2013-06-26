@@ -4,6 +4,10 @@ QuickAssets is a simple script in development with the goal of making it easier 
 
 The goal is to create a simple framework for defining a server (or multiple servers) and automatically setting cache-friendly URLs. You should be handling the actual caching yourself, either with server-side Apache/Nginx settings or with a cache engine like Varnish (or both).
 
+### NOTE
+
+Going forward, **query strings will be the default `showMethod` for QuickAssets**. This will increase cross-server compatibility and ease-of-use. If you would like to use the previous default, set the `showMethod` to `qa_inline`, which will generate filenames in the form `name.CACHEBUSTINGSTRING.ext`.
+
 ## MIT License
 Copyright © Chris Van Patten, <http://www.chrisvanpatten.com>
 
