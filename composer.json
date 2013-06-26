@@ -1,0 +1,8 @@
+{
+	"name": "vanpattenmedia/quickassets",
+	"autoload": {
+		"psr-0": {
+			"Vanpattenmedia\\QuickAssets": "src"
+		}
+	}
+}

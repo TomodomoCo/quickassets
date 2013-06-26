@@ -1,5 +1,7 @@
 <?php
 
+namespace Vanpattenmedia\QuickAssets;
+
 /**
  * Copyright (c) 2012 Chris Van Patten.
  */
