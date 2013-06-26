@@ -13,9 +13,11 @@ Going forward, **query strings will be the default `showMethod` for QuickAssets*
 Getting started with QuickAssets is easy. First, add QuickAssets to your composer.json file:
 
 ```json
+{
 	"require": {
 		"vanpattenmedia/quickassets": "dev-master"
 	}
+}
 ```
 
 Then, install QuickAssets with `composer install`.
