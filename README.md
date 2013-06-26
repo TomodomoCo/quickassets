@@ -8,6 +8,26 @@ The goal is to create a simple framework for defining a server (or multiple serv
 
 Going forward, **query strings will be the default `showMethod` for QuickAssets**. This will increase cross-server compatibility and ease-of-use. If you would like to use the previous default, set the `showMethod` to `qa_inline`, which will generate filenames in the form `name.CACHEBUSTINGSTRING.ext`.
 
+### ANOTHER NOTE
+
+If you used QuickAssets prior to its Composer integration, you'll need to update your code next time you update, so QuickAssets can be included properly. We _highly_ recommend installing QuickAssets with [Composer](http://getcomposer.org/) (see ["Using QuickAssets"](#using-quickassets) below) but if for some reason you can't, simply change your code:
+
+Here's the legacy way of including QuickAssets:
+
+```php
+<?php
+require_once('ABSPATH/to/quickassets/lib.php');
+```
+
+Now, do this:
+
+```php
+<?php
+require_once('ABSPATH/to/quickassets/src/VanPattenMedia/QuickAssets/QuickAsset.php');
+```
+
+Again, **we highly recommend installing QuickAssets via Composer**. The above directions are only if you can't, for whatever bad reason.
+
 ### Using QuickAssets
 
 Getting started with QuickAssets is easy. First, add QuickAssets to your composer.json file:
