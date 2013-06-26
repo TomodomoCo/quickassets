@@ -3,7 +3,7 @@
 namespace Vanpattenmedia\QuickAssets;
 
 /**
- * Copyright (c) 2012 Chris Van Patten.
+ * Copyright (c) 2012-2013 Van Patten Media Inc.
  */
 
 class QuickAsset {
