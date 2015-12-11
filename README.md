@@ -23,9 +23,9 @@ Then, install QuickAssets with `composer install`.
 In your project's code, require QuickAssets and instantiate it:
 
 ```php
-use VanPattenMedia\QuickAssets;
+use VanPattenMedia\QuickAssets\QuickAsset;
 
-$a = new VanPattenMedia\QuickAssets\QuickAsset;
+$a = new QuickAsset();
 ```
 
 Next, set up an asset type:
@@ -58,6 +58,32 @@ And you'll get:
 ```
 
 [Consult the wiki](https://github.com/vanpattenmedia/quickassets/wiki) for more examples and to learn how to change the display of your cache busting string, as well as its contents.
+
+### Twig Extension
+
+Version 1.5 introduces an extension for Twig, the popular PHP template engine. This makes it easier to include your assets in Twig templates.
+
+To get started, instantiate the `QuickAsset` object and add your configuration (abbreviated example):
+
+```php
+$quickAsset = new \VanPattenMedia\QuickAssets\QuickAsset();
+
+$quickAsset->addAssetType( 'css', arr...
+```
+
+Once you're set up, add the extension and pass in your object:
+
+```php
+$twig->addExtension( new \VanPattenMedia\QuickAssets\TwigExtension( $quickAsset ) );
+```
+
+You can now access the QuickAssets URL function within Twig:
+
+```twig
+This is an image:
+
+<img src="{{ asset_url( 'img', 'pizza.jpg' ) }}">
+```
 
 ## MIT License
 Copyright © Van Patten Media Inc., <http://www.vanpattenmedia.com>

@@ -1,9 +1,9 @@
 <?php
 
-namespace Vanpattenmedia\QuickAssets;
+namespace VanPattenMedia\QuickAssets;
 
 /**
- * Copyright (c) 2012-2013 Van Patten Media Inc.
+ * Copyright (c) 2012-2015 Van Patten Media Inc.
  */
 
 class QuickAsset {
