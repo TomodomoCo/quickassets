@@ -1,5 +1,7 @@
 <?php
 
+use VanPattenMedia\QuickAssets\QuickAsset;
+
 /**
  * WARNING:
  * This may not work! Try it only with the caveat that it may eat all your food and force you to walk the plank.
@@ -9,19 +11,16 @@
 /**
  * Call QuickAssets into action
  */
-
-include_once '../lib.php';
 $asset = new QuickAsset();
 
 
 /**
  * 0. Define filename handlers
  * ---------------------------
- * We include three by default: inline/default, queryString, and folder
+ * We include two by default: query string (default) and inline (in the file name)
  *
- * Inline: file.ext > file.VERSION.ext OR file > file-VERSION
- * Querystring: file.ext > file.ext?VERSION
- * Folder: file.ext > VERSION/file.ext
+ * Query string (default): file.ext > file.ext?VERSION
+ * Inline: file.ext > file.VERSION.ext
  *
  * You can add your own as well. We give you the relative path to
  * the asset type and the file name: you do the rest.
@@ -40,21 +39,21 @@ $asset = new QuickAsset();
  * string is created, but where it's placed in the path.
  */
 
-$asset->addBustMethod('someString', function($assetPath, $assetFile, $rootPath) {
+$asset->addBustMethod( 'someString', function( $assetPath, $assetFile, $rootPath ) {
 	return 'VERSION';
-});
+} );
 
-$asset->addBustMethod('myRandomBuster', function($assetPath, $assetFile, $rootPath) {
+$asset->addBustMethod( 'myRandomBuster', function( $assetPath, $assetFile, $rootPath ) {
 	return rand(5, 500);
-});
+} );
 
-$asset->addBustMethod('myCustomBuster', function($assetPath, $assetFile, $rootPath) {
+$asset->addBustMethod( 'myCustomBuster', function( $assetPath, $assetFile, $rootPath ) {
 	return '123456';
-});
+} );
 
-$asset->addBustMethod('md5Buster', function($assetPath, $assetFile, $rootPath) {
-	return md5($rootPath . '/' . $assetPath . $assetFile);
-});
+$asset->addBustMethod( 'md5Buster', function( $assetPath, $assetFile, $rootPath ) {
+	return md5( $rootPath . '/' . $assetPath . $assetFile );
+} );
 
 
 /**
@@ -65,25 +64,26 @@ $asset->addBustMethod('md5Buster', function($assetPath, $assetFile, $rootPath) {
  * use different cache busting methods for each type of asset.
  */
 
-$asset->addAssetType('img', array(
+$asset->addAssetType( 'img', [
 	'assetPath' => 'path/to/img/',
 	// bustMethod is not set, so it uses "_default"
 	// showMethod is not set, so it uses "_default"
-));
+] );
 
-$asset->addAssetType('js', array(
+$asset->addAssetType( 'js', [
 	'assetPath'  => 'path/to/js/',
 	'bustMethod' => 'myRandomBuster',
-));
+] );
 
-$asset->addAssetType('css', array(
+$asset->addAssetType( 'css', [
 	'assetPath'  => 'path/to/css/',
-));
+	'showMethod' => 'qa_inline',
+] );
 
-$asset->addAssetType('movie', array(
-	'assetPath'	=>	'path/to/movie',
+$asset->addAssetType( 'movie', [
+	'assetPath'	=>	'path/to/movie/',
 	'bustMethod' => 'md5Buster'
-));
+] );
 
 
 /**
@@ -93,41 +93,36 @@ $asset->addAssetType('movie', array(
  * parallelization of requests), or empty entry for relative
  * paths.
  *
- * Double backslash protocol-relative URLs are also supported
- * although they won't always work in local development.
+ * In this step, you also bind asset types to the hosts you'd
+ * like them paired with.
  */
 
-$asset->addHost('//www.domain.com/', array(
-	'assetTypes' => 'img',
-));
+$asset->addHost( '//www.domain.com/', [
+	'assetTypes' => [ 'img' ],
+] );
 
-$asset->addHost('', array(
-	'assetTypes' => 'js',
-));
+$asset->addHost( '', [
+	'assetTypes' => [ 'js' ],
+] );
 
-$asset->addHost('http://media$.domain.com/', array(
-	'maxHosts' => 4,
-	'assetTypes' => 'css, movie',
-));
-// Output (cycling through assets, evenly spread, in order):
-// - http://media1.domain.com/
-// - http://media2.domain.com/
-// - http://media3.domain.com/
-// - http://media4.domain.com/
+$asset->addHost( 'https://media$.domain.com/', [
+	'maxHosts'   => 4,
+	'assetTypes' => [ 'css', 'movie' ],
+] );
 
 ?>
 
 
 <h1>In practice</h1>
 
-<?= $asset->url('img', 'image.png') ?>
-<!-- //www.domain.com/path/to/img/image.VERSION.png -->
+<?= $asset->url( 'img', 'image.png'; ) ?>
+<!-- //www.domain.com/path/to/img/image.png?20151217191924 -->
 
-<?= $asset->url('js', 'script.js') ?>
-<!-- /path/to/js/script.407.js -->
+<?= $asset->url( 'js', 'script.js' ); ?>
+<!-- /path/to/js/script.js?407 -->
 
-<?= $asset->url('css', 'style.css') ?>
-<!-- http://media1.domain.com/path/to/css/VERSION/style.css -->
+<?= $asset->url( 'css', 'style.css' ); ?>
+<!-- https://media2.domain.com/path/to/css/style.20151217191924.css -->
 
-<?= $asset->url('movie', 'video.mp4') ?>
-<!-- http://media2.domain.com/path/to/movies/video.version-8f5bffb4b330c96eb5733c2a76c6b364.mp4 -->
+<?= $asset->url( 'movie', 'video.mp4' ); ?>
+<!-- https://media2.domain.com/path/to/movies/video.mp4?8f5bffb4b330c96eb5733c2a76c6b364 -->

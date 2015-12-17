@@ -1,45 +1,52 @@
 <?php
 
+use VanPattenMedia\QuickAssets\QuickAsset;
+
 /**
- * A _realistic_ sample configuration of quickassets.
+ * A simple sample configuration of QuickAssets.
  */
 
-include_once '../lib.php';
 $a = new QuickAsset();
 
-$a->addAssetType('img', array(
+// Asset types
+$a->addAssetType( 'img', [
 	'assetPath' => 'wp-content/themes/awesomedesign/img/',
-));
+] );
 
-$a->addAssetType('js', array(
-	'assetPath' => 'wp-content/themes/awesomedesign/js/',
-));
+$a->addAssetType( 'js', [
+	'assetPath'  => 'wp-content/themes/awesomedesign/js/',
+	'showMethod' => 'qa_inline',
+] );
 
 $a->addAssetType('css', array(
 	'assetPath' => 'wp-content/themes/awesomedesign/css/',
-));
+] );
 
+// Asset hosts
 $a->addHost('//www.domain.com/', array(
-	'assetTypes' => 'img, js',
-));
+	'assetTypes' => [ 'img', 'js' ],
+] );
 
-if (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off' || $_SERVER['SERVER_PORT'] == 443) {
-	$a->addHost('https://www.domain.com/', array(
-		'assetTypes' => 'css',
-	));
+if ( !empty( $_SERVER['HTTPS'] ) && $_SERVER['HTTPS'] !== 'off' || $_SERVER['SERVER_PORT'] == 443 ) {
+	$a->addHost( 'https://www.domain.com/', [
+		'assetTypes' => [ 'css' ],
+	] );
 } else {
-	$a->addHost('http://www.domain.com/', array(
-		'assetTypes' => 'css',
-	));
+	$a->addHost( 'http://www.domain.com/', [
+		'assetTypes' => [ 'css' ],
+	] );
 }
 
 ?>
 
-<?= $a->url('img', 'image.png'); ?>
-<!-- Outputs `//www.domain.com/wp-content/themes/awesomedesign/img/image.1341071509.png` -->
 
-<?= $a->url('js', 'script.js'); ?>
-<!-- Outputs `//www.domain.com/wp-content/themes/awesomedesign/js/script.1341071579.js` -->
+<h1>In practice</h1>
 
-<?= $a->url('css', 'style.css'); ?>
-<!-- Outputs `http://www.domain.com/wp-content/themes/awesomedesign/js/style.1341071579.css` -->
+<?= $a->url( 'img', 'image.png' ); ?>
+<!-- Outputs `//www.domain.com/wp-content/themes/awesomedesign/img/image.png?20151217191924` -->
+
+<?= $a->url( 'js', 'script.js' ); ?>
+<!-- Outputs `//www.domain.com/wp-content/themes/awesomedesign/js/script.20151217191924.js` -->
+
+<?= $a->url( 'css', 'style.css' ); ?>
+<!-- Outputs `https://www.domain.com/wp-content/themes/awesomedesign/js/style.css?20151217191924` -->
