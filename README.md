@@ -20,7 +20,7 @@ Getting started with QuickAssets is easy. First, add QuickAssets to your compose
 
 Then, install QuickAssets with `composer install`.
 
-In your project's code, require QuickAssets and instantiate it:
+In your project's code, after requiring the Composer autoloader, use QuickAssets and instantiate it:
 
 ```php
 use VanPattenMedia\QuickAssets\QuickAsset;
@@ -41,7 +41,7 @@ Bind your asset type to a new host:
 
 ```php
 $a->addHost('/', array(
-	'assetTypes' => 'css',
+	'assetTypes' => [ 'css' ],
 ));
 ```
 
