@@ -299,7 +299,7 @@ class QuickAsset {
 		 * 5. ...
 		 * 6. Profit!
 		 */
-		 
+		
 		 /*
 		 	In slightly more technical detail...
 		 	
@@ -322,47 +322,47 @@ class QuickAsset {
 		 	
 		 */
 
-		 // do we know about this asset type?		 
+		 // do we know about this asset type?		
 		 if (!array_key_exists($assetType, $this->assetTypes))
 		 {
 			 trigger_error('QuickAsset::url expects parameter 1 to be an $assetType that has already been registered', E_USER_WARNING);
 			 return false;
 		 }
-		 
+		
 		 // has it been bound to a host?
 		 if (!array_key_exists($assetType, $this->assetTypesToHosts))
 		 {
 			 trigger_error('QuickAsset::url expects parameter 1 to be an $assetType that has been bound to a host (please use QuickAsset::addHost)', E_USER_WARNING);
 			 return false;
 		 }
-		 
+		
 		 $host = $this->assetTypesToHosts[$assetType];
-		 
+		
 		  // is the bust method callable?
 		 $bustMethod = $this->assetTypes[$assetType]['bustMethod'];
-		 
+		
 		 if (!array_key_exists($bustMethod, $this->bustMethods))
 		 {
 			 trigger_error('QuickAsset::url expects the bustMethod "' . htmlentities(strip_tags($bustMethod), ENT_QUOTES) . '" to be registered before trying to use it', E_USER_WARNING);
 			 return false;
 		 }
-		 
+		
 		 // is the show method callable?
 		 $showMethod = $this->assetTypes[$assetType]['showMethod'];
-		 
+		
 		 if (!array_key_exists($showMethod, $this->showMethods))
 		 {
 			 trigger_error('QuickAsset::url expects the showMethod "' . htmlentities(strip_tags($showMethod), ENT_QUOTES) . '" to be registered before trying to use it', E_USER_WARNING);
 			 return false;
 		 }
-		 
+		
 		 // does the host exist?
 		 if (!array_key_exists($host, $this->hosts))
 		 {
 			 trigger_error('QuickAsset::url expects the host "' . htmlentities(strip_tags($host), ENT_QUOTES) . '" to be registered before trying to use it', E_USER_WARNING);
-			 return false;			 
+			 return false;			
 		 }
-		 
+		
 		 // cycle hosts if necessary
 		 if ($this->hosts[$host]['shouldCycleHosts'])
 		 {
@@ -371,25 +371,25 @@ class QuickAsset {
 		 else {
 			 $hostString = $host;
 		 }
-		 
+		
 		 if ($hostString == '_')
 		 {
 		 	// deal with default host case
 			$hostString = '';
 		 }
-		 
+		
 		 $assetPath = $this->assetTypes[$assetType]['assetPath'];
 		 $rootPath = $this->assetTypes[$assetType]['rootPath'];
-		 
+		
 		 // execute bust method to get bust string
 		 $bustString = call_user_func_array($this->bustMethods[$bustMethod], array($assetPath, $assetFile, $rootPath));
-		 
+		
 		 // execute show method to get finished string
 		 $finishedAsset = call_user_func_array($this->showMethods[$showMethod], array($hostString, $assetFile, $assetPath, $bustString));
-		 
+		
 		 // post filtering
 		 //eesca
-		 
+		
 		 // return/echo
 		 return $finishedAsset;
 	}
