@@ -199,14 +199,18 @@ class QuickAsset {
 			return false;
 		}
 		
-		if (strlen($parameters['assetTypes']) < 1)
+		if (empty($parameters['assetTypes']))
 		{
 			trigger_error('QuickAsset::addHost expects the \'assetTypes\' parameter to not be empty', E_USER_WARNING);
 			return false;
 		}		
 		
-		// bring $assetTypes to bind this host to into an array
-		$assetTypes = explode(',', str_replace(' ', '', $parameters['assetTypes']));
+		if (!is_array($parameters['assetTypes'])) {
+			// bring $assetTypes to bind this host to into an array
+			$assetTypes = explode(',', str_replace(' ', '', $parameters['assetTypes']));
+		} else {
+			$assetTypes = $parameters['assetTypes'];
+		}
 		
 		if (count($assetTypes) < 1)
 		{
